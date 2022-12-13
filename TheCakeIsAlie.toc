@@ -1,0 +1,49 @@
+## Interface: 100002
+## Author: alie
+## Title: TheCakeIsAlie
+## Notes: Personal UI patches
+## SavedVariablesPerCharacter: TheCakeIsAlieDB
+
+embeds/Dashi/embed.xml
+
+addon.lua
+options.lua
+
+modules/automation/cinematics.lua
+modules/automation/invites.lua
+modules/automation/loot.lua
+modules/automation/mail.lua
+modules/automation/repair.lua
+modules/automation/rogueclasshall.lua
+modules/automation/trash.lua
+
+modules/binding/eject.lua
+modules/binding/mount.lua
+modules/binding/reload.lua
+modules/binding/worldmarker.lua
+# modules/binding/rightclick.lua
+modules/binding/fishing.lua
+
+modules/chat/commands.lua
+modules/chat/format.lua
+modules/chat/history.lua
+modules/chat/scrolling.lua
+modules/chat/settings.lua
+modules/chat/sounds.lua
+modules/chat/copypaste.lua
+
+modules/compat/opie/rings.lua
+modules/compat/opie/settings.lua
+modules/compat/tomtom.lua
+
+modules/misc/alerts.lua
+modules/misc/commands.lua
+modules/misc/hide.lua
+
+modules/settings/cvars.lua
+modules/settings/mutesoundfile.lua
+# modules/settings/scale.lua
+
+# modules/tooltip/id.lua
+
+modules/widgets/supertracking.lua
