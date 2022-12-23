@@ -13,20 +13,55 @@ function addon:CONFIRM_DISENCHANT_ROLL(rollID, rollType)
 	end
 end
 
+-- completely hide lootbox thing
 
-local LOOT_DELAY = 0.5
-local epoch = 0
-local function onLootReady()
-    if GetCVarBool("autoLootDefault") ~= IsModifiedClick("AUTOLOOTTOGGLE") then
-        if (GetTime() - epoch) >= LOOT_DELAY then
-            for i = GetNumLootItems(), 1, -1 do
-                LootSlot(i)
-            end
-            epoch = GetTime()
+local function NoLootFrame_OnEvent(self, event, ...)
+
+    if event == 'LOOT_OPENED' then
+        self.autoLoot = ...
+        if self.autoLoot then
+            LootFrame:SetScript('OnEvent', nil)
+            CloseLoot()
+            return
         end
+    end
+
+    if event == 'CHAT_MSG_LOOT' then
+        local guid =  select(12, ...)
+        if guid ~= UnitGUID('player') then
+            return
+        end
+        local msg = ...
+        local pre, link, color, post = msg:match('^(.*)(|c(........)|H.+|h|r)(.*)$')
+        if color == PoorQualityColor then
+            return
+        end
+        local txt = '|cff33cc33' .. pre .. FONT_COLOR_CODE_CLOSE ..
+                    link .. 
+                    '|cff33cc33' .. post .. FONT_COLOR_CODE_CLOSE
+        UIErrorsFrame:AddMessage(txt)
+        return
+    end
+
+    if event == 'LOOT_CLOSED' then
+        if self.autoLoot then
+            LootFrame:SetScript('OnEvent', LootFrame_OnEvent)
+        end
+        self.autoLoot = nil
+        return
     end
 end
 
-function addon:LOOT_READY()
-	onLootReady()
-end
+local NoLootFrame = CreateFrame('Frame', UIParent)
+NoLootFrame:SetScript('OnEvent', NoLootFrame_OnEvent)
+
+-- We need to make sure we get this event before LootFrame so that we can
+-- unset it's OnEvent handler if we're autolooting.
+
+LootFrame:UnregisterEvent('LOOT_OPENED')
+
+NoLootFrame:RegisterEvent('LOOT_OPENED')
+LootFrame:RegisterEvent('LOOT_OPENED')
+
+NoLootFrame:RegisterEvent('LOOT_CLOSED')
+NoLootFrame:RegisterEvent('CHAT_MSG_LOOT')

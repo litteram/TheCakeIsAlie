@@ -5,7 +5,7 @@ addon:Hide('TicketStatusFrame')
 addon:Hide('DurabilityFrame')
 addon:Hide('VehicleSeatIndicator')
 addon:Hide('StanceBar')
-addon:Hide('MainMenuBarVehicleLeaveButton')
+-- addon:Hide('MainMenuBarVehicleLeaveButton')
 
 -- order hall bar
 addon:HookAddOn('Blizzard_OrderHallUI', function()
@@ -13,7 +13,7 @@ addon:HookAddOn('Blizzard_OrderHallUI', function()
 end)
 
 -- chat frame buttons
-addon:Hide('QuickJoinToastButton')
+-- addon:Hide('QuickJoinToastButton')
 
 if not IsAddOnLoaded("Ls_Glass") then -- let LS:Glass handle the chat style
 	addon:Hide('ChatFrameChannelButton')

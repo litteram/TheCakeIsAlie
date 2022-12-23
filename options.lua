@@ -65,7 +65,7 @@ function addon:ADDON_LOADED(evt)
     if evt == addonName then
         TheCakeIsAlieDB = TheCakeIsAlieDB or CopyTable(defaultConfig)
         addon.db = TheCakeIsAlieDB
-        addon:Dump(TheCakeIsAlieDB)
+        -- addon:Dump(TheCakeIsAlieDB)
 
         initialize()
     end
