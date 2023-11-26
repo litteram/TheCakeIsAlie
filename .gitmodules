@@ -1,0 +1,3 @@
+[submodule "embeds/Dashi"]
+	path = embeds/Dashi
+	url = https://github.com/p3lim-wow/Dashi.git
