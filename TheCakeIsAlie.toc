@@ -1,10 +1,12 @@
-## Interface: 100002
+## Interface: 100207, 110000, 110002
 ## Author: alie
 ## Title: TheCakeIsAlie
 ## Notes: Personal UI patches
 ## SavedVariablesPerCharacter: TheCakeIsAlieDB
 
 embeds/Dashi/embed.xml
+embeds/LibStub/LibStub.lua
+embeds/TaintLess.xml
 
 addon.lua
 options.lua
@@ -16,34 +18,56 @@ modules/automation/mail.lua
 modules/automation/repair.lua
 modules/automation/rogueclasshall.lua
 modules/automation/trash.lua
+modules/automation/keystone.lua
+modules/automation/fishing_p3lim.lua
 
 modules/binding/eject.lua
 modules/binding/mount.lua
 modules/binding/reload.lua
 modules/binding/worldmarker.lua
 # modules/binding/rightclick.lua
-modules/binding/fishing.lua
 
-modules/chat/commands.lua
+# modules/chat/copypaste.lua
 modules/chat/format.lua
+modules/chat/commands.lua
 modules/chat/history.lua
+modules/chat/sounds.lua
 modules/chat/scrolling.lua
 modules/chat/settings.lua
-modules/chat/sounds.lua
-modules/chat/copypaste.lua
+modules/chat/tabs.lua
+modules/chat/filter.lua
+modules/chat/substitute.lua
 
-modules/compat/opie/rings.lua
-modules/compat/opie/settings.lua
+# modules/compat/opie/rings.lua
+# modules/compat/opie/settings.lua
 modules/compat/tomtom.lua
+
+modules/map/doors.lua
+modules/map/areas.lua
+modules/map/pin.lua
 
 modules/misc/alerts.lua
 modules/misc/commands.lua
-modules/misc/hide.lua
+# modules/misc/hide.lua
 
 modules/settings/cvars.lua
 modules/settings/mutesoundfile.lua
 # modules/settings/scale.lua
 
-# modules/tooltip/id.lua
+modules/tooltip/id.lua
+modules/tooltip/data.lua
+modules/tooltip/style.lua
+modules/tooltip/expiration.lua
+modules/tooltip/addons.lua
 
 modules/widgets/supertracking.lua
+modules/widgets/clickcasting_button.lua
+# modules/widgets/clickcasting.lua
+modules/widgets/loot.lua
+modules/widgets/coordinates.lua
+modules/widgets/money.lua
+modules/widgets/dressingroom.lua
+modules/widgets/bagslots.lua
+modules/widgets/nekkid.lua
+modules/widgets/minimap_buttons.lua
+

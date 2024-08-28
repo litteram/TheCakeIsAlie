@@ -70,6 +70,8 @@ hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', function(self)
 		self:SetScale(3/4)
 	elseif garrisonType == Enum.GarrisonType.Type_9_0 then
 		self:SetScale(1/2)
+	elseif garrisonType == Enum.GarrisonType.Type_10_0 then
+		self:SetScale(1/2)
 	end
 end)
 

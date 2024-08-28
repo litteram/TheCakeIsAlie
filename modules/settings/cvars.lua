@@ -65,24 +65,37 @@ local CVARS = {
     nameplateShowEnemyMinus = 1,
     ShowNamePlateLoseAggroFlash = 1,
     nameplateShowAll = 1,
-    nameplateShowSelf = 0,
     NamePlateHorizontalScale = 1,
     NamePlateVerticalScale = 1,
     nameplateMotion = 1,
     nameplateShowOnlyNames = 1,
-    nameplatePersonalShowInCombat = 0,
     nameplateOverlapV = 0.5,
     nameplateOtherTopInset = 0.1,
     nameplateLargeTopInset = 0.1,
     nameplateOtherBottomInset = 0.1,
     nameplateLargeBottomInset = 0.1,
+
+
+    -- Personal Display
+    nameplateShowSelf = 1,
+    NameplatePersonalClickThrough = 1,
+    NameplatePersonalHideDelayAlpha = 0.45,
+    NameplatePersonalHideDelaySeconds = 6.0,
+    NameplatePersonalShowInCombat = 1,
+    NameplatePersonalShowWithTarget = 0,
+    nameplatePlayerLargerScale = 1.8,
+    nameplateResourceOnTarget = 0,
+    nameplateSelfScale = 1.0,
     nameplateSelfBottomInset = 0.28,
     nameplateSelfTopInset = 0.39,
+
 
     -- Camera
     cameraWaterCollision = 0,
     cameraDistanceMaxZoomFactor = 2.6, -- 2.6 is default max
     cameraSmoothStyle = 0,
+    cameraIndirectVisibility = 1,
+    cameraIndirectOffset = 10,
 
     -- Mouse
     enableMouseSpeed = 0,
@@ -112,6 +125,10 @@ local CVARS = {
     Sound_MusicVolume = 0.2,
     Sound_AmbienceVolume = 0.1,
     Sound_DialogVolume = 0.6,
+
+    -- Combat
+    floatingCombatTextCombatDamage = 1,
+    floatingCombatTextCombatHealing = 1,
 }
 
 -- list of settings NOT listed in the interface options, but still used
@@ -136,8 +153,8 @@ local UVARS = {
 }
 
 function addon:PLAYER_LOGIN()
-	-- sort bags the *right* way
-	C_Container.SetSortBagsRightToLeft(true)
+    -- sort bags the *right* way
+    C_Container.SetSortBagsRightToLeft(true)
 
     if C_CVar.GetCVarBool('autoLootDefault') then
         -- we'll use this one to check if we're set, since it's off by default

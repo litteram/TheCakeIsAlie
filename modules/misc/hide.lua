@@ -14,11 +14,3 @@ end)
 
 -- chat frame buttons
 -- addon:Hide('QuickJoinToastButton')
-
-if not IsAddOnLoaded("Ls_Glass") then -- let LS:Glass handle the chat style
-	addon:Hide('ChatFrameChannelButton')
-	addon:Hide('ChatFrameMenuButton')
-	for index = 1, NUM_CHAT_WINDOWS do
-		addon:Hide('ChatFrame' .. index .. 'ButtonFrame')
-	end
-end
