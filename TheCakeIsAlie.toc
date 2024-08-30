@@ -4,12 +4,13 @@
 ## Notes: Personal UI patches
 ## SavedVariablesPerCharacter: TheCakeIsAlieDB
 
+embeds/LibStub.lua
+embeds/CallbackHandler-1.0.lua
+embeds/LibSharedMedia-3.0.lua
 embeds/Dashi/embed.xml
-embeds/LibStub/LibStub.lua
 embeds/TaintLess.xml
 
 addon.lua
-options.lua
 
 modules/automation/cinematics.lua
 modules/automation/invites.lua
@@ -19,7 +20,8 @@ modules/automation/repair.lua
 modules/automation/rogueclasshall.lua
 modules/automation/trash.lua
 modules/automation/keystone.lua
-modules/automation/fishing_p3lim.lua
+#modules/automation/fishing_p3lim.lua
+modules/automation/fishing.lua
 
 modules/binding/eject.lua
 modules/binding/mount.lua
