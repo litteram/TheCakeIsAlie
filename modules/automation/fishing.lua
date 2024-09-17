@@ -1,91 +1,149 @@
-local addonName, addon = ...
+local _, addon = ...
 
--- dragonflight
-local fishingID = 131474
-local fishingCastingID = 131476
+-- while fishing the button bound to the fishing spell will be rebound to interact with the bobber,
+-- and sounds are toggled to listen to the bobber while fishing
 
--- keybind
-local keybinding = "["
-
-local isFishing = false
--- create a new secure macro-button
-local button = addon:BindButton(addonName .. 'Fishing', keybinding, 'SecureActionButtonTemplate')
-button:SetAttribute('type', 'macro')
-button:SetAttribute('macrotext', '/cast [nocombat] Fishing')
-button:SetScript('PreClick', function(self)
-    if InCombatLockdown() then return end
-    isFishing = true
-end)
-button:SetScript('PostClick', function(self)
-    C_Timer.After(0.5, function()
-        if InCombatLockdown() then return end
-        if isFishing then
-            SetOverrideBinding(self, true, keybinding, "INTERACTTARGET")
-        else
-            ClearOverrideBindings(self)
-        end
-    end)
-end)
-
-local userCVars = {}
-local fishingCVars = {
-    -- targeting
-    SoftTargetInteract = 3,
-    SoftTargetInteractArc = 2,
-    SoftTargetInteractRange = 15,
-    SoftTargetIconGameObject = 1,
-    -- sound enhancement
-    Sound_EnableAmbience = 0,
-    Sound_EnableDialog = 0,
-    Sound_EnableMusic = 0,
-    Sound_AmbienceVolume = 0,
-    Sound_EnableAllSound = 1,
-    Sound_EnableEmoteSounds = 0,
-    Sound_EnableErrorSpeech = 0,
-    Sound_EnablePetSounds = 0,
-    Sound_EnableSFX = 1,
-    Sound_MasterVolume = 0.5,
-    Sound_MusicVolume = 0.25,
-    Sound_SFXVolume = 1,
+local CVARS = {
+	Sound_EnableSFX = 1,
+	Sound_MasterVolume = 1,
+	Sound_MusicVolume = 0,
+	Sound_AmbienceVolume = 0,
+	Sound_SFXVolume = 1,
+	SoftTargetInteract = 3, -- enables interacting with the fishing bobber
+	SoftTargetInteractArc = 2, -- widens interact arc
+	SoftTargetInteractRange = 30, -- increases interact range
+	SoftTargetIconInteract = 1, -- show interact icons
+	SoftTargetIconGameObject = 1, -- show interact icon specifically for objects, like the bobber
 }
 
-local function SetupCVars(data)
-    for cvar, value in next, data do
-        _G.SetCVar(cvar, tonumber(value))
-    end
+local FISHING_SPELLS = {
+	[131474] = true, -- cast spell
+	[131476] = true, -- cast spell
+	[131490] = true, -- channel spell
+	[405274] = true, -- Zskera fishing
+}
+
+-- our state and attribute handler
+local handler = CreateFrame('Frame', nil, nil, 'SecureHandlerStateTemplate, SecureHandlerAttributeTemplate')
+
+-- reset override bindings if entering combat
+handler:SetAttribute('_onattributechanged', [[
+	if name == 'state-combat' and value == 'clear' then
+		self:ClearBindings()
+	end
+]])
+
+local getSpellBinding
+do
+	local function findSpellButton(spellID)
+		local slotBindings = {}
+
+		-- use existing utilities to iterate through all action buttons to find the spell
+		local button = ActionButtonUtil.GetActionButtonBySpellID(spellID)
+		if button then
+			local slot = button.action
+			local actionType, actionID = GetActionInfo(slot)
+			if (actionType == 'spell' and actionID == spellID) or (actionType == 'macro' and GetMacroSpell(actionID) == spellID) then
+				-- found a button, let's find the binding
+				local bindingName
+				local index = ((slot % 12) == 0 and 12 or (slot % 12))
+				if not button.buttonType or button.buttonType == 'ACTIONBUTTON' then
+					-- handle pages and forms
+					local page
+					if HasBonusActionBar() and GetActionBarPage() == 1 then
+						page = GetBonusBarIndex()
+					else
+						page = GetActionBarPage()
+					end
+
+					if ((page * 12) - 12 + index) == slot then
+						bindingName = 'ACTIONBUTTON' .. index
+					end
+				else
+					bindingName = button.buttonType .. index
+				end
+
+				table.insert(slotBindings, bindingName)
+			end
+		end
+
+		return slotBindings
+	end
+
+	function getSpellBinding(spellID)
+		for _, binding in next, findSpellButton(spellID) do
+			local key1, key2 = GetBindingKey(binding)
+			if key1 or key2 then
+				return key1, key2
+			end
+		end
+	end
 end
 
-local function OnFishingStart(self, unit, _, spellid)
-    if InCombatLockdown() then return end
-    if unit ~= "player" then return end
-    if spellid ~= fishingCastingID then return end
+local origCVars = {}
+local activeFishingSpell
 
-    isFishing = true
-    UIErrorsFrame:AddMessage('+ fishing', 0.1, 1, 0.8)
-
-    SetupCVars(fishingCVars)
+local function restoreCVars()
+	for name, value in next, origCVars do
+		C_CVar.SetCVar(name, value)
+	end
 end
 
-local function OnFishingStop(self, unit, _, spellid)
-    if InCombatLockdown() then return end
-    if unit ~= "player" then return end
-    if spellid ~= fishingCastingID then return end
+local function fishingStop(_, _, _, spellID)
+	if FISHING_SPELLS[spellID] then
+		-- restore cvars to their previous values
+		restoreCVars()
 
-    isFishing = false
-    UIErrorsFrame:AddMessage('- fishing', 0.1, 1, 0.8)
+		-- clear bindings
+		addon:Defer(ClearOverrideBindings, handler)
+		addon:Defer(UnregisterStateDriver, handler, 'combat')
 
-    ClearOverrideBindings(button)
-
-    SetupCVars(userCVars)
+		-- unregister ourselves
+		addon:UnregisterEvent('PLAYER_LOGOUT', restoreCVars)
+		return true
+	end
 end
 
-addon:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START", OnFishingStart)
-addon:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP", OnFishingStop)
-addon:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED", OnFishingStop)
+local function fishingStart(_, _, _, spellID)
+	if FISHING_SPELLS[spellID] then
+		-- iterate through the CVars we want to change
+		for name, value in next, CVARS do
+			-- store the original values
+			origCVars[name] = C_CVar.GetCVar(name)
 
-function addon:PLAYER_ENTERING_WORLD()
-    -- save CVars
-    for cvar, _ in next, fishingCVars do
-        userCVars[cvar] = GetCVar(cvar)
-    end
+			-- set our values
+			C_CVar.SetCVar(name, value)
+		end
+
+		if activeFishingSpell then
+			-- rebind the fishing spell hotkey
+			local key1, key2 = getSpellBinding(activeFishingSpell)
+			if key1 then
+				SetOverrideBinding(handler, true, key1, 'INTERACTTARGET')
+			end
+			if key2 then
+				SetOverrideBinding(handler, true, key2, 'INTERACTTARGET')
+			end
+
+			-- register state driver to reset the binding when player enters combat
+			RegisterStateDriver(handler, 'combat', '[combat] clear; nothing')
+		end
+
+		-- wait for fishing to end
+		addon:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_STOP', 'player', fishingStop)
+		addon:RegisterEvent('PLAYER_LOGOUT', restoreCVars)
+	end
 end
+
+function addon:UNIT_SPELLCAST_SENT(unit, _, _, spellID)
+	-- BUG: this event is not a valid unit event for whatever reason
+	if unit == 'player' and FISHING_SPELLS[spellID] then
+		-- this event triggers before UNIT_SPELLCAST_CHANNEL_START and holds the actual spell
+		-- used to start fishing, so we'll store it and wait for that even to trigger
+		activeFishingSpell = spellID
+	end
+end
+
+-- some fishing starts by interacting with objects, and as such has no USS event trigger,
+-- we need to listen to USCS all the time
+addon:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_START', 'player', fishingStart)

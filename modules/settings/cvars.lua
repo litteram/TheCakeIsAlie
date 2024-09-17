@@ -30,7 +30,7 @@ local CVARS = {
     -- Social
     profanityFilter = 0,
     spamFilter = 0,
-    guildMemberNotify = 1,
+    guildMemberNotify = 0,
     blockTrades = 0,
     blockChannelInvites = 0,
     showToastOnline = 0,
@@ -58,37 +58,40 @@ local CVARS = {
     UnitNameFriendlyMinionName = 0,
     UnitNameEnemyPlayerName = 1,
     UnitNameEnemyMinionName = 0,
-    nameplateShowFriends = 0,
-    nameplateShowFriendlyMinions = 0,
-    nameplateShowEnemies = 1,
-    nameplateShowEnemyMinions = 0,
-    nameplateShowEnemyMinus = 1,
-    ShowNamePlateLoseAggroFlash = 1,
-    nameplateShowAll = 1,
     NamePlateHorizontalScale = 1,
     NamePlateVerticalScale = 1,
-    nameplateMotion = 1,
-    nameplateShowOnlyNames = 1,
-    nameplateOverlapV = 0.5,
-    nameplateOtherTopInset = 0.1,
-    nameplateLargeTopInset = 0.1,
-    nameplateOtherBottomInset = 0.1,
-    nameplateLargeBottomInset = 0.1,
-
-
-    -- Personal Display
-    nameplateShowSelf = 1,
     NameplatePersonalClickThrough = 1,
     NameplatePersonalHideDelayAlpha = 0.45,
     NameplatePersonalHideDelaySeconds = 6.0,
     NameplatePersonalShowInCombat = 1,
     NameplatePersonalShowWithTarget = 0,
+    ShowNamePlateLoseAggroFlash = 1,
+    nameplateLargeBottomInset = 0.1,
+    nameplateLargeTopInset = 0.1,
+    nameplateMotion = 1,
+    nameplateOtherBottomInset = 0.1,
+    nameplateOtherTopInset = 0.1,
+    nameplateOverlapV = 0.5,
     nameplatePlayerLargerScale = 1.8,
     nameplateResourceOnTarget = 0,
-    nameplateSelfScale = 1.0,
     nameplateSelfBottomInset = 0.28,
+    nameplateSelfScale = 1.0,
     nameplateSelfTopInset = 0.39,
-
+    nameplateShowAll = 1,
+    nameplateShowEnemies = 1,
+    nameplateShowEnemyMinions = 1,
+    nameplateShowEnemyMinus = 1,
+    nameplateShowFriendlyMinions = 0,
+    nameplateShowFriends = 1,
+    nameplateShowOnlyNames = 1,
+    nameplateShowSelf = 1,
+    NameplatePersonalClickThrough = 1,
+    NameplatePersonalHideDelayAlpha = 0.5,
+    NameplatePersonalHideDelaySeconds = 5,
+    NameplatePersonalShowWithTarget = 1,
+    nameplateMotion = 1,
+    nameplateResourceOnTarget = 0,
+    nameplateShowPersonalCooldowns = 1,
 
     -- Camera
     cameraWaterCollision = 0,
@@ -156,10 +159,12 @@ function addon:PLAYER_LOGIN()
     -- sort bags the *right* way
     C_Container.SetSortBagsRightToLeft(true)
 
+    --[[
     if C_CVar.GetCVarBool('autoLootDefault') then
         -- we'll use this one to check if we're set, since it's off by default
         return
     end
+    ]]--
 
     for key, value in next, CVARS do
         C_CVar.SetCVar(key, tostring(value))
@@ -169,8 +174,9 @@ function addon:PLAYER_LOGIN()
         C_CVar.SetCVar(key, tostring(value))
     end
 
+    -- FIXME: Taint!
     -- need to update the nameplate driver for cvars to take effect
-    NamePlateDriverFrame:UpdateNamePlateOptions()
+    -- NamePlateDriverFrame:UpdateNamePlateOptions()
 
     return true
 end

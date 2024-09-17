@@ -1,6 +1,8 @@
 local _, addon = ...
 
 function addon:PLAYER_LOGIN()
+	if not addon.db.set_ui_scale then return end
+
 	local _, height = GetPhysicalScreenSize()
 	if (768 / height) < (768 / 1200) then
 		-- game can't be scaled further than 0.64, so instead we'll lock the UI scale and

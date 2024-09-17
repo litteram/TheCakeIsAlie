@@ -6,6 +6,7 @@ if _G.TheCakeIsAlieDB == nil then
         cinematics_destroy = false,
         block_rightclick = false,
         map_pin = true,
+        set_ui_scale = false,
     }
 end
 addon.db = addon.db or _G.TheCakeIsAlieDB
@@ -58,6 +59,14 @@ addon:RegisterSettings("TheCakeIsAlieDB", {
         type = "toggle",
         title = "block right click",
         tooltip = "Block right click in combat",
+        default = false,
+        new = false,
+    },
+    {
+        key = "set_ui_scale",
+        type = "toggle",
+        title = "Set UI Scale",
+        tooltip = "Set UI scale at login to be pixel-perfect",
         default = false,
         new = false,
     },
