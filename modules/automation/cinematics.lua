@@ -1,24 +1,27 @@
 local _, addon = ...
 
-if addon.db.cinematics_destroy then
-    function addon:CINEMATIC_START()
+addon:RegisterEvent('PLAYER_LOGIN', function (self, ...)
+    if not addon:GetOption('cinematics_destroy') then return 1 end
+
+    addon:RegisterEvent('CINEMATIC_START', function()
         if not IsModifierKeyDown() then
             CinematicFrame_CancelCinematic()
         end
 
         local PlayMovie_hook = MovieFrame_PlayMovie
         MovieFrame_PlayMovie = function(...)
-            if IsModifierKeyDown() or not addon.db.cinematics then
+            if IsModifierKeyDown() then
                 PlayMovie_hook(...)
             else
                 GameMovieFinished()
             end
         end
-    end
-end
+    end)
+end)
 
+addon:RegisterEvent('PLAYER_LOGIN', function (self, ...)
+    if not addon:GetOption('cinematics_esc') then return 1 end
 
-if addon.db.cinematics_esc then
     CinematicFrame:HookScript("OnKeyDown", function(self, key)
         if key == "ESCAPE" then
             if CinematicFrame:IsShown() and CinematicFrame.closeDialog and CinematicFrameCloseDialogConfirmButton then
@@ -40,4 +43,4 @@ if addon.db.cinematics_esc then
             end
         end
     end)
-end
+end)

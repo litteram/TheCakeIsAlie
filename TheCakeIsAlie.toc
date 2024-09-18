@@ -5,9 +5,11 @@
 ## SavedVariablesPerCharacter: TheCakeIsAlieDB
 
 embeds/LibStub.lua
-# embeds/CallbackHandler-1.0.lua
+embeds/CallbackHandler-1.0.lua
 embeds/Dashi/embed.xml
-# embeds/TaintLess.xml
+embeds/TaintLess.xml
+
+locale/itIT.lua
 
 addon.lua
 
@@ -15,6 +17,8 @@ modules/automation/cinematics.lua
 modules/automation/fishing.lua
 modules/automation/invites.lua
 modules/automation/keystone.lua
+modules/automation/loot.lua
+modules/automation/sell_junk.lua
 
 modules/chat/commands.lua
 modules/chat/filter.lua

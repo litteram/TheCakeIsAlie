@@ -1,55 +1,24 @@
 local addonName, addon = ...
-addon = addon or {}
-if _G.TheCakeIsAlieDB == nil then
-    _G.TheCakeIsAlieDB = {
-        cinematics_esc = true,
-        cinematics_destroy = false,
-        block_rightclick = false,
-        map_pin = true,
-        set_ui_scale = false,
-    }
-end
-addon.db = addon.db or _G.TheCakeIsAlieDB
+local L = addon.L
 
-addon:RegisterSlash("/alie", function()
-    addon:Dump(TheCakeIsAlieDB)
+addon:RegisterSlash('/alie', function()
+    addon:DumpUI(_G.TheCakeIsAlieDB)
 end)
-
-function trimMultiline(str)
-    local out = ""
-    local indent = 0
-    for nline, line in str:gmatch("[^\r\n]+") do
-        local ind = 0
-
-        for i = 1, #line do
-            local c = line:sub(i,i)
-            ind = ind + 1
-            if c ~= " " and c ~= "\t" then
-                line = line:sub(i, #line)
-            end
-        end
-        if nline ~= 0 and ind < indent then
-            indent = ind
-        end
-    end
-
-    return str
-end
 
 addon:RegisterSettings("TheCakeIsAlieDB", {
     {
         key = "cinematics_esc",
         type = "toggle",
-        title = "Quick cancel cinematics",
-        tooltip = "Quickly cancel cinematics with a single keypress (esc)",
+        title = L["Quick cancel cinematics"],
+        tooltip = L["Quickly cancel cinematics with a single keystroke (esc)"],
         default = false,
         new = false,
     },
     {
         key = "cinematics_destroy",
         type = "toggle",
-        title = "Automatically cancel all cinematics",
-        tooltip = "Automatically cancel all cinematics without any confirmations. Recommended to be off.",
+        title = L["Automatically cancel all cinematics"],
+        tooltip = L["Automatically cancel all cinematics without any confirmations."],
         default = false,
         new = false,
         
@@ -57,29 +26,46 @@ addon:RegisterSettings("TheCakeIsAlieDB", {
     {
         key = "block_rightclick",
         type = "toggle",
-        title = "block right click",
-        tooltip = "Block right click in combat",
+        title = L["block right click"],
+        tooltip = L["Block right click during combat"],
         default = false,
         new = false,
     },
     {
         key = "set_ui_scale",
         type = "toggle",
-        title = "Set UI Scale",
-        tooltip = "Set UI scale at login to be pixel-perfect",
+        title = L["Set UI scale"],
+        tooltip = L["Set UI scale at login to be pixel-perfect"],
         default = false,
         new = false,
     },
     {
         key = "map_pin",
         type = "toggle",
-        title = "Map pin tweaks",
-        tooltip = "Enhance map pin:\n- infinite tracking\n- time to arrive",
+        title = L["Map pin tweaks"],
+        tooltip = L["Enhance map pin with infinite tracking and time to arrive"],
+        default = true,
+        new = false,
+    },
+    {
+        key = "auto_repair",
+        type = "toggle",
+        title = L["Repair"],
+        tooltip = L["Automatically repair gear when visiting a vendor"],
+        default = true,
+        new = false,
+    },
+    {
+        key = "auto_sell_junk",
+        type = "toggle",
+        title = L["Sell junk"],
+        tooltip = L["Automatically sell all junk when visiting a vendor"],
         default = true,
         new = false,
     },
 })
 
+addon:RegisterSettingsSlash('/'..addonName, '/thecake')
 
 local bindings = {}
 function addon:BindButton(name, key, template)

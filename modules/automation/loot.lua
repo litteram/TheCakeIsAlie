@@ -1,17 +1,21 @@
 local _, addon = ...
 
 -- confirm loot rolls
-function addon:CONFIRM_LOOT_ROLL(rollID, rollType)
-	if rollType > 0 then
-		ConfirmLootRoll(rollID, rollType)
-	end
-end
+addon:RegisterEvent('CONFIRM_LOOT_ROLL', function(self, rollID, rollType, ...)
+  if not addon:GetSettings('confirm_loot_roll') then return 1 end
 
-function addon:CONFIRM_DISENCHANT_ROLL(rollID, rollType)
 	if rollType > 0 then
 		ConfirmLootRoll(rollID, rollType)
 	end
-end
+end)
+
+addon:RegisterEvent('CONFIRM_DISENCHANT_ROLL', function(self, rollID, rollType, ...)
+  if not addon:GetSettings('confirm_disenchant_roll') then return 1 end
+
+	if rollType > 0 then
+		ConfirmLootRoll(rollID, rollType)
+	end
+end)
 
 -- completely hide lootbox thing
 

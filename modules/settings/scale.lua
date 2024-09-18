@@ -1,7 +1,7 @@
 local _, addon = ...
 
-function addon:PLAYER_LOGIN()
-	if not addon.db.set_ui_scale then return end
+addon:RegisterEvent('PLAYER_LOGIN', function(self, ...)
+	if not addon:GetOption('set_ui_scale') then return end
 
 	local _, height = GetPhysicalScreenSize()
 	if (768 / height) < (768 / 1200) then
@@ -18,4 +18,4 @@ function addon:PLAYER_LOGIN()
 	end
 
 	return true
-end
+end)
