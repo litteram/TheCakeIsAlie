@@ -45,7 +45,7 @@ local CVARS = {
     -- ActionBars
     lockActionBars = 1,
     alwaysShowActionBars = 0,
-    countdownForCooldowns = 0,
+    countdownForCooldowns = 1,
 
     -- Names
     UnitNameOwn = 0,
@@ -82,7 +82,7 @@ local CVARS = {
     nameplateShowEnemyMinions = 1,
     nameplateShowEnemyMinus = 1,
     nameplateShowFriendlyMinions = 0,
-    nameplateShowFriends = 1,
+    nameplateShowFriends = 0,
     nameplateShowOnlyNames = 1,
     nameplateShowSelf = 1,
     NameplatePersonalClickThrough = 1,
@@ -132,6 +132,9 @@ local CVARS = {
     -- Combat
     floatingCombatTextCombatDamage = 1,
     floatingCombatTextCombatHealing = 1,
+
+    -- UI Scaling
+    WorldTextScale = 0.82,
 }
 
 -- list of settings NOT listed in the interface options, but still used

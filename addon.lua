@@ -6,6 +6,16 @@ addon:RegisterSlash('/alie', function()
 end)
 
 addon:RegisterSettings("TheCakeIsAlieDB", {
+    -- Combat
+    {
+        key = "block_rightclick",
+        type = "toggle",
+        title = L["block right click"],
+        tooltip = L["Block right click during combat"],
+        default = false,
+        new = false,
+    },
+    -- UI
     {
         key = "cinematics_esc",
         type = "toggle",
@@ -24,14 +34,6 @@ addon:RegisterSettings("TheCakeIsAlieDB", {
         
     },
     {
-        key = "block_rightclick",
-        type = "toggle",
-        title = L["block right click"],
-        tooltip = L["Block right click during combat"],
-        default = false,
-        new = false,
-    },
-    {
         key = "set_ui_scale",
         type = "toggle",
         title = L["Set UI scale"],
@@ -39,6 +41,7 @@ addon:RegisterSettings("TheCakeIsAlieDB", {
         default = false,
         new = false,
     },
+    -- Map
     {
         key = "map_pin",
         type = "toggle",
@@ -47,6 +50,24 @@ addon:RegisterSettings("TheCakeIsAlieDB", {
         default = true,
         new = false,
     },
+    -- Minimap
+    {
+        key = "fade_minimap_buttons",
+        type = "toggle",
+        title = L["Fade minimap buttons"],
+        tooltip = L["Hide minimap buttons, hover with your cursor to show them again"],
+        default = false,
+        new = false,
+    },
+    {
+        key = "fade_minimap_garrison_button",
+        type = "toggle",
+        title = L["Fade minimap garrison button"],
+        tooltip = L["Hide minimap garrison buttons, hover with your cursor to show it again"],
+        default = false,
+        new = false,
+    },
+    -- Automation
     {
         key = "auto_repair",
         type = "toggle",
