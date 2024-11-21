@@ -1,4 +1,4 @@
-## Interface: 100207, 110000, 110002
+## Interface: 100207, 110000, 110002, 110005
 ## Author: alie
 ## Title: TheCakeIsAlie
 ## Notes: Personal UI patches
@@ -17,7 +17,7 @@ modules/automation/cinematics.lua
 modules/automation/fishing.lua
 modules/automation/invites.lua
 modules/automation/keystone.lua
-## modules/automation/loot.lua
+modules/automation/loot.lua
 modules/automation/sell_junk.lua
 
 modules/chat/commands.lua
@@ -34,6 +34,7 @@ modules/misc/alerts.lua
 modules/misc/commands.lua
 modules/misc/popups.lua
 modules/misc/bulk_buy.lua
+modules/misc/talking_head.lua
 
 modules/settings/cvars.lua
 modules/settings/mutesoundfile.lua

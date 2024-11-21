@@ -12,8 +12,7 @@ addon:RegisterSettings("TheCakeIsAlieDB", {
         type = "toggle",
         title = L["block right click"],
         tooltip = L["Block right click during combat"],
-        default = false,
-        new = false,
+        default = true,
     },
     -- UI
     {
@@ -21,8 +20,7 @@ addon:RegisterSettings("TheCakeIsAlieDB", {
         type = "toggle",
         title = L["Quick cancel cinematics"],
         tooltip = L["Quickly cancel cinematics with a single keystroke (esc)"],
-        default = false,
-        new = false,
+        default = true,
     },
     {
         key = "cinematics_destroy",
@@ -30,8 +28,32 @@ addon:RegisterSettings("TheCakeIsAlieDB", {
         title = L["Automatically cancel all cinematics"],
         tooltip = L["Automatically cancel all cinematics without any confirmations."],
         default = false,
-        new = false,
-        
+    },
+    {
+        key = "talking_head_instances_hide",
+        type = "toggle",
+        title = L["Hide talking head in instances"],
+        default = true,
+    },
+    {
+        key = "talking_head_instances_mute",
+        type = "toggle",
+        title = L["Mute talking heads in instances"],
+        default = true,
+    },
+    {
+        key = "talking_head_hide",
+        type = "toggle",
+        title = L["Hide talking head"],
+        tooltip = L["Completely hide and mute the talking heads in the world"],
+        default = false,
+    },
+    {
+        key = "talking_head_mute",
+        type = "toggle",
+        title = L["Mute talking head"],
+        tooltip = L["Make the talking heads silent in the world"],
+        default = false,
     },
     {
         key = "set_ui_scale",
@@ -39,7 +61,6 @@ addon:RegisterSettings("TheCakeIsAlieDB", {
         title = L["Set UI scale"],
         tooltip = L["Set UI scale at login to be pixel-perfect"],
         default = false,
-        new = false,
     },
     -- Map
     {
@@ -48,7 +69,6 @@ addon:RegisterSettings("TheCakeIsAlieDB", {
         title = L["Map pin tweaks"],
         tooltip = L["Enhance map pin with infinite tracking and time to arrive"],
         default = true,
-        new = false,
     },
     -- Minimap
     {
@@ -56,8 +76,7 @@ addon:RegisterSettings("TheCakeIsAlieDB", {
         type = "toggle",
         title = L["Fade minimap buttons"],
         tooltip = L["Hide minimap buttons, hover with your cursor to show them again"],
-        default = false,
-        new = false,
+        default = true,
     },
     {
         key = "fade_minimap_garrison_button",
@@ -65,7 +84,6 @@ addon:RegisterSettings("TheCakeIsAlieDB", {
         title = L["Fade minimap garrison button"],
         tooltip = L["Hide minimap garrison buttons, hover with your cursor to show it again"],
         default = false,
-        new = false,
     },
     -- Automation
     {

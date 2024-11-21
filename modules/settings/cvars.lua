@@ -135,6 +135,9 @@ local CVARS = {
 
     -- UI Scaling
     WorldTextScale = 0.82,
+
+    -- perf
+    worldPreloadNonCritical = 0,
 }
 
 -- list of settings NOT listed in the interface options, but still used
