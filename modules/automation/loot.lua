@@ -20,6 +20,7 @@ end)
 -- completely hide lootbox thing
 
 local function NoLootFrame_OnEvent(self, event, ...)
+    if not addon:GetSettings('auto_loot_fast') then return 0 end
 
     if event == 'LOOT_OPENED' then
         self.autoLoot = ...

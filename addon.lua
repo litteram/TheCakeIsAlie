@@ -102,6 +102,14 @@ addon:RegisterSettings("TheCakeIsAlieDB", {
         default = true,
         new = false,
     },
+    {
+        key = "auto_loot_fast",
+        type = "toggle",
+        title = L["Fast Autoloot"],
+        tooltip = L["Loot items extremely fast, can be buggy"],
+        default = true,
+        new = false,
+    },
 })
 
 addon:RegisterSettingsSlash('/'..addonName, '/thecake')
