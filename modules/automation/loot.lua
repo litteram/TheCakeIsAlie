@@ -2,7 +2,7 @@ local _, addon = ...
 
 -- confirm loot rolls
 addon:RegisterEvent('CONFIRM_LOOT_ROLL', function(self, rollID, rollType, ...)
-  if not addon:GetSettings('confirm_loot_roll') then return 1 end
+  if not addon:GetOption('confirm_loot_roll') then return 1 end
 
 	if rollType > 0 then
 		ConfirmLootRoll(rollID, rollType)
@@ -10,7 +10,7 @@ addon:RegisterEvent('CONFIRM_LOOT_ROLL', function(self, rollID, rollType, ...)
 end)
 
 addon:RegisterEvent('CONFIRM_DISENCHANT_ROLL', function(self, rollID, rollType, ...)
-  if not addon:GetSettings('confirm_disenchant_roll') then return 1 end
+  if not addon:GetOption('confirm_disenchant_roll') then return 1 end
 
 	if rollType > 0 then
 		ConfirmLootRoll(rollID, rollType)
@@ -20,7 +20,7 @@ end)
 -- completely hide lootbox thing
 
 local function NoLootFrame_OnEvent(self, event, ...)
-    if not addon:GetSettings('auto_loot_fast') then return 0 end
+    if not addon:GetOption('auto_loot_fast') then return 0 end
 
     if event == 'LOOT_OPENED' then
         self.autoLoot = ...
@@ -50,23 +50,32 @@ local function NoLootFrame_OnEvent(self, event, ...)
 
     if event == 'LOOT_CLOSED' then
         if self.autoLoot then
-            LootFrame:SetScript('OnEvent', LootFrame_OnEvent)
+            _G['LootFrame']:SetScript('OnEvent', _G['LootFrame_OnEvent'])
         end
         self.autoLoot = nil
         return
     end
 end
 
-local NoLootFrame = CreateFrame('Frame', UIParent)
-NoLootFrame:SetScript('OnEvent', NoLootFrame_OnEvent)
+local NoLootFrame = CreateFrame('Frame', _G['UIParent'])
+local function noop() end
 
--- We need to make sure we get this event before LootFrame so that we can
--- unset it's OnEvent handler if we're autolooting.
+local function init_autoloot()
+    if addon:GetOption('auto_loot_fast') then
+        NoLootFrame:SetScript('OnEvent', NoLootFrame_OnEvent)
+        -- We need to make sure we get this event before LootFrame so that we can
+        -- unset it's OnEvent handler if we're autolooting.
 
-LootFrame:UnregisterEvent('LOOT_OPENED')
+        _G['LootFrame']:UnregisterEvent('LOOT_OPENED')
+        NoLootFrame:RegisterEvent('LOOT_OPENED')
+        _G['LootFrame']:RegisterEvent('LOOT_OPENED')
 
-NoLootFrame:RegisterEvent('LOOT_OPENED')
-LootFrame:RegisterEvent('LOOT_OPENED')
+        NoLootFrame:RegisterEvent('LOOT_CLOSED')
+        NoLootFrame:RegisterEvent('CHAT_MSG_LOOT')
+    else
+        NoLootFrame:SetScript('OnEvent', noop)
+    end
+end
 
-NoLootFrame:RegisterEvent('LOOT_CLOSED')
-NoLootFrame:RegisterEvent('CHAT_MSG_LOOT')
+addon:RegisterEvent("PLAYER_LOGIN", init_autoloot)
+addon:RegisterOptionCallback('auto_loot_fast', init_autoloot)
